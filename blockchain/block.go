@@ -3,6 +3,7 @@ package blockchain
 import (
 	"bytes"
 	"crypto/sha256"
+	"mine-it/wallet"
 	"strconv"
 	"time"
 )
@@ -42,6 +43,13 @@ func NewBlockchain() *BlockChain {
 }
 
 func (bc *BlockChain) AddBlock(data string) {
+	prevBlock := bc.Blocks[len(bc.Blocks)-1]
+	newBlock := NewBlock(data, prevBlock.Hash)
+	bc.Blocks = append(bc.Blocks, newBlock)
+}
+
+// AddWalletBlock adds a block with transaction data from a wallet
+func (bc *BlockChain) AddWalletBlock(wallet *wallet.Wallet, data string) {
 	prevBlock := bc.Blocks[len(bc.Blocks)-1]
 	newBlock := NewBlock(data, prevBlock.Hash)
 	bc.Blocks = append(bc.Blocks, newBlock)
