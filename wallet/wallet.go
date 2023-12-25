@@ -9,10 +9,16 @@ import (
 	"fmt"
 )
 
+type Coin struct {
+	Symbol  string
+	Balance float64
+}
+
 type Wallet struct {
-	PrivateKey     string
-	PublicKey      string
-	BitcoinAddress string
+	PrivateKey  string
+	PublicKey   string
+	CoinAddress map[string]string
+	Name        string
 }
 
 func newKeyPair() (*rsa.PrivateKey, *rsa.PublicKey) {
@@ -26,14 +32,13 @@ func newKeyPair() (*rsa.PrivateKey, *rsa.PublicKey) {
 }
 
 func generateAddress(publicKey *rsa.PublicKey) string {
-	// Hash the public key to simulate a Bitcoin address
 	hash := sha256.New()
 	hash.Write(x509.MarshalPKCS1PublicKey(publicKey))
 	address := fmt.Sprintf("%x", hash.Sum(nil))
 	return address
 }
 
-func NewWallet() *Wallet {
+func NewWallet(name string) *Wallet {
 	privateKey, publicKey := newKeyPair()
 	privateKeyPEM := pem.EncodeToMemory(
 		&pem.Block{
@@ -49,7 +54,18 @@ func NewWallet() *Wallet {
 		},
 	)
 
-	bitcoinAddress := generateAddress(publicKey)
-	wallet := Wallet{string(privateKeyPEM), string(publicKeyPEM), bitcoinAddress}
+	coinAddress := generateAddress(publicKey)
+	wallet := Wallet{
+		PrivateKey:  string(privateKeyPEM),
+		PublicKey:   string(publicKeyPEM),
+		CoinAddress: map[string]string{"Bitcoin": coinAddress},
+		Name:        name,
+	}
 	return &wallet
+}
+
+func (w *Wallet) PrintWallet() {
+	fmt.Println("Wallet")
+	fmt.Println("Coin address: " + fmt.Sprintf("%v", w.CoinAddress))
+	fmt.Println("Name: " + w.Name)
 }

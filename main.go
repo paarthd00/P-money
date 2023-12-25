@@ -9,17 +9,31 @@ import (
 func main() {
 	bc := blockchain.NewBlockchain()
 
-	// Create a new wallet
-	w := wallet.NewWallet()
+	samwallet := wallet.NewWallet("Sam")
+	jjwallet := wallet.NewWallet("JJ")
+	transactions := []blockchain.Transaction{
+		{Sender: samwallet.Name, Recipient: jjwallet.Name, Amount: 1.0, Coin: "Bitcoin"},
+		{Sender: jjwallet.Name, Recipient: samwallet.Name, Amount: 0.01, Coin: "Ethereum"},
+	}
 
-	// Add a block to the blockchain with the wallet's public key
-	bc.AddWalletBlock(w, "Transaction data from wallet")
-	bc.AddBlock("Send 1 P-money to Big J")
-	// Print the blockchain
+	bc.AddBlock(transactions)
+	transactions2 := []blockchain.Transaction{
+		{Sender: samwallet.Name, Recipient: jjwallet.Name, Amount: 0.01, Coin: "Bitcoin"},
+		{Sender: jjwallet.Name, Recipient: samwallet.Name, Amount: 0.01, Coin: "Ethereum"},
+	}
+	bc.AddBlock(transactions2)
 	for _, block := range bc.Blocks {
 		fmt.Printf("Prev. hash: %x\n", block.PrevHash)
-		fmt.Printf("Data: %s\n", block.Data)
+		fmt.Printf("Timestamp: %d\n", block.Timestamp)
+		for _, tx := range block.Transactions {
+			fmt.Printf("  Sender: %s\n", tx.Sender)
+			fmt.Printf("  Recipient: %s\n", tx.Recipient)
+			fmt.Printf("  Amount: %f %s\n", tx.Amount, tx.Coin)
+		}
 		fmt.Printf("Hash: %x\n", block.Hash)
 		fmt.Println()
 	}
+
+	samwallet.PrintWallet()
+	jjwallet.PrintWallet()
 }
