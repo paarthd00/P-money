@@ -2,15 +2,19 @@
 
 ## Overview
 
-P-money is a simple implementation of a blockchain-based cryptocurrency. It includes a basic blockchain structure with blocks and transactions, as well as a wallet for managing public and private keys.
+P-money is a blockchain-based cryptocurrency implementation with a basic structure for managing transactions and wallets. It features a straightforward blockchain architecture, blocks, and transactions, along with a wallet component for handling public and private keys.
 
-## Files
+## Project Structure
 
-- **main.go:** The main entry point for the P-money program. It initializes a new blockchain, creates a wallet, and adds blocks to the blockchain with transaction data.
+- **main.go:** The main entry point of the P-money program, initializing the blockchain, creating a wallet, and adding blocks to the blockchain with transaction data.
 
-- **blockchain/blockchain.go:** Contains the blockchain-related logic, including block and blockchain struct definitions, block creation, hashing, and blockchain management functions.
+- **blockchain/blockchain.go:** Houses the blockchain-related logic, including definitions for blocks and the blockchain structure, block creation, hashing, and functions for managing the blockchain.
 
-- **wallet/wallet.go:** Implements a basic wallet with functions for generating public and private key pairs, creating a Bitcoin-like address, and initializing a new wallet.
+- **wallet/wallet.go:** Implements a basic wallet with functions for generating public and private key pairs, creating Bitcoin-like addresses, and initializing a new wallet.
+
+- **client/client.go:** Contains the client-side code responsible for sending transactions to the P-money blockchain server.
+
+- **server/server.go:** The server-side code for handling incoming transactions, updating the blockchain, and managing connections.
 
 ## Getting Started
 
@@ -26,21 +30,25 @@ P-money is a simple implementation of a blockchain-based cryptocurrency. It incl
    cd p-money
    ```
 
-3. Run the main program:
+3. Run the server:
 
    ```bash
-   go run main.go
+   go run server/server.go
    ```
 
-   This will create a new blockchain, generate a wallet, and add blocks to the blockchain with transaction data.
+4. Open a new terminal window and run the client with arguments for the username, recipient name, amount, and coin type:
+
+   ```bash
+   go run client/client.go <username> <recipient> <amount> <coin>
+   ```
 
 ## Dependencies
 
-- This project uses the Go programming language. Make sure you have Go installed on your machine.
+- This project uses the Go programming language. Ensure you have Go installed on your machine.
 
 ## Customization
 
-- You can customize the P-money blockchain and wallet by modifying the `blockchain` and `wallet` packages. For example, you may want to add more features to the wallet or modify the block creation process.
+- Tailor the P-money blockchain and wallet by modifying the `blockchain` and `wallet` packages. Explore additional features, tweak the wallet, or enhance the block creation process.
 
 ## License
 
@@ -48,8 +56,28 @@ This P-money implementation is open-source and released under the [MIT License](
 
 ## Acknowledgments
 
-- This project is inspired by the principles of blockchain and cryptocurrency technologies.
+- Inspired by the principles of blockchain and cryptocurrency technologies.
 
 ---
 
-Feel free to tailor the README file to include additional details, instructions, or information specific to your project. Adjust the license information, acknowledgments, and other sections as needed. Good luck with your P-money implementation! 🚀💰
+### Project Structure Tree
+
+```plaintext
+.
+├── blockchain
+│   └── block.go
+├── client
+│   ├── client
+│   └── client.go
+├── go.mod
+├── main
+├── main.go
+├── README.md
+├── server
+│   ├── server
+│   └── server.go
+└── wallet
+    └── wallet.go
+```
+
+Feel free to adapt the README to include any additional details or instructions specific to your project. Good luck with your P-money blockchain implementation! 🚀💰
