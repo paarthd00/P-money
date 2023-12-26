@@ -1,32 +1,28 @@
 package main
 
 import (
-	"os"
+	"encoding/gob"
 	"fmt"
-    "log"
-    "net"
-    "encoding/gob"
-	"mine-it/wallet"
-	"strconv"
+	"log"
 	"mine-it/blockchain"
+	"mine-it/wallet"
+	"net"
+	"os"
+	"strconv"
 	"strings"
 )
 
-type P struct {
-    M, N int64
-}
-
 func main() {
 
-	fmt.Println("start client");
-	args := os.Args;
+	fmt.Println("start client")
+	args := os.Args
 
 	name := args[1]
 	recipient := args[2]
 	amount, err := strconv.ParseFloat(strings.TrimSpace(args[3]), 64)
 	coin := args[4]
 
-	if err !=nil{
+	if err != nil {
 		log.Fatal("Connection error", err)
 	}
 
@@ -36,18 +32,17 @@ func main() {
 
 	conn, err := net.Dial("tcp", "localhost:8080")
 
-    if err != nil {
-        log.Fatal("Connection error", err)
-    }
-    encoder := gob.NewEncoder(conn)
+	if err != nil {
+		log.Fatal("Connection error", err)
+	}
+	encoder := gob.NewEncoder(conn)
 
 	transactions := &[]blockchain.Transaction{
 		{Sender: name, Recipient: recipient, Amount: amount, Coin: coin},
 	}
 
-	p := &P{1, 2}
-    encoder.Encode(p)
+	fmt.Printf("Sending : %+v", transactions)
 	encoder.Encode(transactions)
 	conn.Close()
-    fmt.Println("done");
+	fmt.Println("done")
 }
