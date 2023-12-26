@@ -31,6 +31,7 @@ func handleConnection(conn net.Conn, bc *blockchain.BlockChain) {
 
 	conn.Close()
 }
+
 func main() {
 	fmt.Println("start")
 	ln, err := net.Listen("tcp", ":8080")
